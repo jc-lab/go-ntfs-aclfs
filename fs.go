@@ -16,6 +16,7 @@ import (
 //)
 
 type File interface {
+	Name() string
 	fs.File
 	io.ReaderAt
 	io.Writer
