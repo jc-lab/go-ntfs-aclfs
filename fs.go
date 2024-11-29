@@ -3,7 +3,6 @@ package go_ntfs_aclfs
 import (
 	"io"
 	"io/fs"
-	"path/filepath"
 )
 
 //const (
@@ -50,42 +49,4 @@ type Options struct {
 
 	OtherPermissionPolicy     OtherPermissionPolicy
 	UseInheritanceInDirectory bool
-}
-
-func OpenFS(root string, options *Options) (FS, error) {
-	rootPath, err := filepath.Abs(root)
-	if err != nil {
-		rootPath = root
-	}
-
-	//var fsType string
-	//
-	//mounts, err := mountinfo.GetMounts(func(info *mountinfo.Info) (skip, stop bool) {
-	//	return !strings.HasPrefix(rootPath, info.Mountpoint), false
-	//})
-	//if err == nil {
-	//	slices.SortFunc(mounts, func(a, b *mountinfo.Info) int {
-	//		if len(a.Mountpoint) > len(b.Mountpoint) {
-	//			return -1
-	//		} else if len(a.Mountpoint) < len(b.Mountpoint) {
-	//			return 1
-	//		} else {
-	//			return 0
-	//		}
-	//	})
-	//	if len(mounts) > 0 {
-	//		fsType = mounts[0].FSType
-	//	}
-	//}
-	//
-	//log.Println(fsType)
-	// "fuseblk"
-
-	impl := &fsImpl{
-		root: rootPath,
-	}
-	if options != nil {
-		impl.options = *options
-	}
-	return impl, nil
 }
