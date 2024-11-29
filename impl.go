@@ -229,6 +229,8 @@ func mkdirAll(path string, perm fs.FileMode, callback func(path string) error) e
 	err = os.Mkdir(path, perm)
 	if err == nil {
 		err = callback(path)
+	} else if os.IsExist(err) {
+		err = nil
 	}
 	return err
 }
