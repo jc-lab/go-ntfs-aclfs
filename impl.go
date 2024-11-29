@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 	"syscall"
+	"time"
 )
 
 type fsImpl struct {
@@ -119,6 +120,10 @@ func (impl *fsImpl) Rename(oldpath, newpath string) error {
 
 func (impl *fsImpl) Remove(name string) error {
 	return os.Remove(filepath.Join(impl.root, name))
+}
+
+func (impl *fsImpl) Chtimes(name string, atime time.Time, mtime time.Time) error {
+	return os.Chtimes(filepath.Join(impl.root, name), atime, mtime)
 }
 
 func (impl *fsImpl) ChSddl(name string, sddl string) error {

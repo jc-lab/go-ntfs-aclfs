@@ -3,6 +3,7 @@ package go_ntfs_aclfs
 import (
 	"io"
 	"io/fs"
+	"time"
 )
 
 //const (
@@ -33,6 +34,7 @@ type FS interface {
 	Chmod(name string, mode fs.FileMode) error
 	Rename(oldpath, newpath string) error
 	Remove(name string) error
+	Chtimes(name string, atime time.Time, mtime time.Time) error
 	ChSddl(name string, sddl string) error
 }
 
