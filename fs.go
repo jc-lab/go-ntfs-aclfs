@@ -30,6 +30,8 @@ type FS interface {
 	MkdirAll(name string, perm fs.FileMode) error
 	Stat(name string) (fs.FileInfo, error)
 	Chmod(name string, mode fs.FileMode) error
+	Rename(oldpath, newpath string) error
+	Remove(name string) error
 	ChSddl(name string, sddl string) error
 }
 

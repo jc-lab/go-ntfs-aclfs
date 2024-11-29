@@ -113,6 +113,14 @@ func (impl *fsImpl) chmodImpl(path string, mode fs.FileMode) error {
 	return ChSddl(path, sddl)
 }
 
+func (impl *fsImpl) Rename(oldpath, newpath string) error {
+	return os.Rename(filepath.Join(impl.root, oldpath), filepath.Join(impl.root, newpath))
+}
+
+func (impl *fsImpl) Remove(name string) error {
+	return os.Remove(filepath.Join(impl.root, name))
+}
+
 func (impl *fsImpl) ChSddl(name string, sddl string) error {
 	return ChSddl(filepath.Join(impl.root, name), sddl)
 }
