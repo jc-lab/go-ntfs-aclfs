@@ -35,6 +35,7 @@ type FS interface {
 	Rename(oldpath, newpath string) error
 	Remove(name string) error
 	Chtimes(name string, atime time.Time, mtime time.Time) error
+	Symlink(oldname, newname string) error
 	ChSddl(name string, sddl string) error
 }
 

@@ -126,6 +126,10 @@ func (impl *fsImpl) Chtimes(name string, atime time.Time, mtime time.Time) error
 	return os.Chtimes(filepath.Join(impl.root, name), atime, mtime)
 }
 
+func (impl *fsImpl) Symlink(oldname, newname string) error {
+	return os.Symlink(filepath.Join(impl.root, oldname), filepath.Join(impl.root, newname))
+}
+
 func (impl *fsImpl) ChSddl(name string, sddl string) error {
 	return ChSddl(filepath.Join(impl.root, name), sddl)
 }
