@@ -110,7 +110,7 @@ func (impl *fsImpl) chmodImpl(path string, mode fs.FileMode) error {
 			useInherit = stat.IsDir()
 		}
 	}
-	sddl := PermToSddl(mode, impl.options.OwnerSid, impl.options.GroupSid, impl.options.OtherPermissionPolicy, useInherit)
+	sddl := PermToSddl(mode, impl.options.OwnerSids, impl.options.GroupSids, impl.options.OtherPermissionPolicy, useInherit)
 	return ChSddl(path, sddl)
 }
 
@@ -146,7 +146,7 @@ func ChSddl(path string, sddl string) error {
 	return unix.Setxattr(path, "system.ntfs_acl", bin, 0)
 }
 
-func PermToSddl(mode fs.FileMode, ownerSid string, groupSid string, otherPermissionPolicy OtherPermissionPolicy, useInherit bool) string {
+func PermToSddl(mode fs.FileMode, ownerSids []string, groupSids []string, otherPermissionPolicy OtherPermissionPolicy, useInherit bool) string {
 	var sddl strings.Builder
 	var aceFlags string
 
@@ -154,29 +154,34 @@ func PermToSddl(mode fs.FileMode, ownerSid string, groupSid string, otherPermiss
 		aceFlags = "OICI"
 	}
 
-	if len(ownerSid) > 0 {
-		sddl.WriteString("O:" + ownerSid)
+	var ownerSid string
+
+	if len(ownerSids) > 0 {
+		ownerSid = ownerSids[0]
+		sddl.WriteString("O:" + ownerSids[0])
 	}
-	if len(groupSid) > 0 {
-		sddl.WriteString("G:" + groupSid)
+	if len(groupSids) > 0 {
+		sddl.WriteString("G:" + groupSids[0])
 	}
 	sddl.WriteString("D:PAI")
 
-	sddl.WriteString("(A;" + aceFlags + ";" + fmt.Sprintf("0x%x", permToAccessMask(mode>>6)) + ";;;")
-	if len(ownerSid) > 0 {
-		sddl.WriteString(ownerSid)
+	if len(ownerSids) > 0 {
+		for _, sid := range ownerSids {
+			sddl.WriteString("(A;" + aceFlags + ";" + fmt.Sprintf("0x%x", permToAccessMask(mode>>6)) + ";;;" + sid + ")")
+		}
 	} else {
-		sddl.WriteString("CO")
+		sddl.WriteString("(A;" + aceFlags + ";" + fmt.Sprintf("0x%x", permToAccessMask(mode>>6)) + ";;;CO)")
 	}
-	sddl.WriteString(")")
 
-	sddl.WriteString("(A;" + aceFlags + ";" + fmt.Sprintf("0x%x", permToAccessMask(mode>>3)) + ";;;")
-	if len(groupSid) > 0 {
-		sddl.WriteString(groupSid)
+	if len(groupSids) > 0 {
+		for _, sid := range groupSids {
+			if sid != ownerSid {
+				sddl.WriteString("(A;" + aceFlags + ";" + fmt.Sprintf("0x%x", permToAccessMask(mode>>3)) + ";;;" + sid + ")")
+			}
+		}
 	} else {
-		sddl.WriteString("CG")
+		sddl.WriteString("(A;" + aceFlags + ";" + fmt.Sprintf("0x%x", permToAccessMask(mode>>3)) + ";;;CG)")
 	}
-	sddl.WriteString(")")
 
 	for i := 0; i < 2; i++ {
 		if (i == 0) && ((otherPermissionPolicy & OtherPermissionToEveryone) != 0) {

@@ -48,10 +48,10 @@ const (
 )
 
 type Options struct {
-	// Set OwnerSid when creating a file or directory
-	OwnerSid string
-	// Set GroupSid when creating a file or directory
-	GroupSid string
+	// Set OwnerSids[0] when creating a file or directory
+	OwnerSids []string
+	// Set GroupSids[0] when creating a file or directory
+	GroupSids []string
 
 	OtherPermissionPolicy     OtherPermissionPolicy
 	UseInheritanceInDirectory bool
