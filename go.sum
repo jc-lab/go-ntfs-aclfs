@@ -1,0 +1,8 @@
+github.com/jc-lab/win-sddl-converter v0.0.0-20241128045728-ede8d46ddc1e h1:L/WiaFl0rffm+i5UH630clCc5CbnqGMl8nbxkAAo0Kg=
+github.com/jc-lab/win-sddl-converter v0.0.0-20241128045728-ede8d46ddc1e/go.mod h1:dCRlFWddIPTvY/H9lucZeN48INzFXFOE5CxKkpt12os=
+github.com/jc-lab/win-sddl-converter v0.0.0-20241129010202-8158bf59132c h1:yxHor/4NDutjjouz+5hocWbwgsJ79OskJJQrO0t3gTk=
+github.com/jc-lab/win-sddl-converter v0.0.0-20241129010202-8158bf59132c/go.mod h1:dCRlFWddIPTvY/H9lucZeN48INzFXFOE5CxKkpt12os=
+github.com/moby/sys/mountinfo v0.7.2 h1:1shs6aH5s4o5H2zQLn796ADW1wMrIwHsyJ2v9KouLrg=
+github.com/moby/sys/mountinfo v0.7.2/go.mod h1:1YOa8w8Ih7uW0wALDUgT1dTTSBrZ+HiBLGws92L2RU4=
+golang.org/x/sys v0.27.0 h1:wBqf8DvsY9Y/2P8gAfPDEYNuS30J4lPHJxXSb/nJZ+s=
+golang.org/x/sys v0.27.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
