@@ -1,12 +1,8 @@
-//go:build linux || unix
-// +build linux unix
-
 package go_ntfs_aclfs
 
 import (
 	"fmt"
 	winsddlconverter "github.com/jc-lab/win-sddl-converter"
-	"golang.org/x/sys/unix"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -132,18 +128,6 @@ func (impl *fsImpl) Symlink(oldname, newname string) error {
 
 func (impl *fsImpl) ChSddl(name string, sddl string) error {
 	return ChSddl(filepath.Join(impl.root, name), sddl)
-}
-
-func ChSddl(path string, sddl string) error {
-	parsedSddl, err := winsddlconverter.ParseSDDL(sddl)
-	if err != nil {
-		return err
-	}
-	bin, err := parsedSddl.ToBinary()
-	if err != nil {
-		return err
-	}
-	return unix.Setxattr(path, "system.ntfs_acl", bin, 0)
 }
 
 func PermToSddl(mode fs.FileMode, ownerSids []string, groupSids []string, otherPermissionPolicy OtherPermissionPolicy, useInherit bool) string {
